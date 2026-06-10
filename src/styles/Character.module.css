@@ -1,0 +1,29 @@
+.cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.personCard {
+    border: 1px solid teal;
+    margin: 10px;
+    padding: 10px;
+}
+
+.loader {    
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border: 1px solid grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imageCard {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid grey;
+}

@@ -14,7 +14,12 @@
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "noImplicitAny": true,
-        "isolatedModules": true
+        "isolatedModules": true,
+        "types": [
+            "vite/client"
+        ]
     },
-    "include": ["src"]
+    "include": [
+        "src"
+    ]
 }
