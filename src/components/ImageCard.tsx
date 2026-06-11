@@ -1,22 +1,28 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import styles from "../styles/Character.module.css"
 
 export const ImageCard = ({ src }: { src: string }) => {
     const [isLoading, setLoading] = useState(true)
+    const [isError, setError] = useState(false)
 
     return (
-        <>
-            {isLoading && <div className={styles.loader}>
-                <h4>⏳ Загрузка...</h4>
-            </div>}
+        <div className={styles.imageCard}>
+            {isLoading && <h4>⏳ Загрузка...</h4>}
+            {isError && <h4><h2>❌</h2>Не удалось загрузить</h4>}
             <img
-                alt="фото персонажа"
+                alt="Не удалось загрузить"
                 src={src}
-                className={styles.imageCard}
-                style={{ display: isLoading ? "none" : "block" }}
+                className={styles.imagePerson}
+                style={{
+                    display: isLoading || isError ? "none" : "block",
+                    padding: isError ? "10px" : "0"
+                }}
                 onLoad={() => setLoading(false)}
-                onError={() => setLoading(false)}
+                onError={() => {
+                    setLoading(false)
+                    setError(true)
+                }}
             />
-        </>
+        </div>
     )
 }

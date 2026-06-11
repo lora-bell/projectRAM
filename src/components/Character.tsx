@@ -8,15 +8,20 @@ export const Character = () => {
     const [persons, setPersons] = useState(Array<IPerson>)
 
     useEffect(() => {
-        fetch("https://rickandmortyapi.com/api/character")
+        // const load = async() => {
+        //     const res = await fetch("https://rickandmortyapi.com/api/character")
+        //     const data = await res.json()
+        //     setPersons(data.results)
+        // }
+
+        // load()
+
+        fetch("https://potterapi-fedeperin.vercel.app/en/characters")
             .then((res) => {
                 return res.json()
             })
             .then((data) => {
-                const { info, results } = data
-                const countCharacter = info.count
-                setPersons(results)
-                // console.log({info}, {results}, {countCharacter})
+                setPersons(data)
             })
     }, [])
 
@@ -28,13 +33,14 @@ export const Character = () => {
                 <div className={styles.cards}>
                     {persons.map((person) => {
                         return (
-                            <div key={person.id} className={styles.personCard}>
+                            <div key={person.index} className={styles.personCard}>
                                 <ImageCard src={person.image} />
-                                <h3>Name: {person.name}</h3>
-                                <p>gender: {person.gender}</p>
+                                <div className={styles.infoPerson}>
+                                    <h3>{person.nickname}</h3>
+                                    <p>birthdate: {person.birthdate}</p>
+                                </div>
                             </div>
                         )
-
                     })}
                 </div>
                 : <h1>The request failed</h1>
