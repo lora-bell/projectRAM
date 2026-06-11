@@ -26,9 +26,8 @@ export const Character = () => {
     }, [])
 
 
-
     return (
-        <div>
+        <>
             {persons.length > 0 ?
                 <div className={styles.cards}>
                     {persons.map((person) => {
@@ -36,7 +35,10 @@ export const Character = () => {
                             <div key={person.index} className={styles.personCard}>
                                 <ImageCard src={person.image} />
                                 <div className={styles.infoPerson}>
-                                    <h3>{person.nickname}</h3>
+                                    <h3 className={styles.nickname}>                                        
+                                        {person.nickname}     
+                                        <span className={styles.fullName}>{person.fullName}</span>                                   
+                                    </h3>                                    
                                     <p>birthdate: {person.birthdate}</p>
                                 </div>
                             </div>
@@ -46,6 +48,6 @@ export const Character = () => {
                 : <h1>The request failed</h1>
             }
 
-        </div>
+        </>
     )
 }

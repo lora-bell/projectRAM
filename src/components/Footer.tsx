@@ -1,7 +1,9 @@
+import styles from "../styles/Footer.module.css"
+
 export const Footer = () => {
     return (
-        <div>
-            Footer
-        </div>
+        <footer className={styles.footer}>
+            <p>API: Harry Potter Characters</p>
+        </footer>
     )
 }
