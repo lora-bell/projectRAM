@@ -7,16 +7,10 @@ export const Character = () => {
 
     const [persons, setPersons] = useState(Array<IPerson>)
     const [searchPerson, setSearchPerson] = useState<string>("")
+    const [cardCount, setCardCount] = useState<number>(window.innerWidth <= 768 ? 6 : 10)
+    const [currentPage, setCurrentPage] = useState<number>(1)
 
     useEffect(() => {
-        // const load = async() => {
-        //     const res = await fetch("https://rickandmortyapi.com/api/character")
-        //     const data = await res.json()
-        //     setPersons(data.results)
-        // }
-
-        // load()
-
         fetch("https://potterapi-fedeperin.vercel.app/en/characters")
             .then((res) => {
                 if (!res.ok) {
@@ -25,16 +19,45 @@ export const Character = () => {
                 return res.json()
             })
             .then((data) => {
-                setPersons(data)
+                setPersons(data)                
             })
             .catch((e) => setPersons([]))
     }, [])
+
+    useEffect(() => {
+        const updateCardCount = () => {
+            const newCardCount = window.innerWidth <= 768 ? 6 : 10
+            setCardCount(newCardCount)
+        }
+
+        updateCardCount()
+        window.addEventListener('resize', updateCardCount)
+
+        return () => window.removeEventListener('resize', updateCardCount)
+    }, [])
+
 
     const filterPerson = persons.filter(person => {
         return person.nickname.toLowerCase().includes(searchPerson.toLowerCase()) ||
             person.fullName.toLowerCase().includes(searchPerson.toLowerCase())
 
     })
+    const pageCount = Math.ceil(filterPerson.length / cardCount)
+    const startIndex = (currentPage - 1) * cardCount
+    const endIndex = startIndex + cardCount
+    const currentPagePersons = filterPerson.slice(startIndex, endIndex)
+    const indexsCurrentPagePersons = currentPagePersons.map(item => item.index)
+
+    useEffect(() => {
+        if (currentPage > pageCount) {
+            setCurrentPage(1)
+        }
+    }, [currentPage, pageCount])
+
+    let pagination = []
+    for (let i = 1; i <= pageCount; i++) {
+        pagination.push(i)
+    }
 
     return (
         <>
@@ -45,14 +68,15 @@ export const Character = () => {
                         placeholder="🔍 Поиск по имени..."
                         className={styles.inputSearch}
                         value={searchPerson}
-                        onChange={(elem) => setSearchPerson(elem.target.value)}
+                        onChange={(elem) => {
+                            setSearchPerson(elem.target.value)
+                            setCurrentPage(1)
+                        }}
                     >
                     </input>
                     <div className={styles.cards}>
                         {persons.map((person) => {
-                            const isVisible =
-                                person.nickname.toLowerCase().includes(searchPerson.toLowerCase()) ||
-                                person.fullName.toLowerCase().includes(searchPerson.toLowerCase())
+                            const isVisible = indexsCurrentPagePersons.includes(person.index)
 
                             return (
                                 <div
@@ -72,6 +96,15 @@ export const Character = () => {
                             )
                         })}
                     </div>
+                    <div>Страницы: {pagination.map(item => {
+                        return <button
+                            key={item}
+                            className={styles.buttonPage}
+                            onClick={() => setCurrentPage(item)}
+                            disabled={item === currentPage ? true : false}
+                            // aria-label={`Страница ${item}`}
+                        >{item}</button>
+                    })}</div>
                     {filterPerson.length === 0 && <h3 className={styles.info}>Персонажи с таким именем не найдены</h3>}
                 </div>
                 : <h3 className={styles.info}>Персонажи не получены<br />Попробуйте зайти на страницу позже</h3>

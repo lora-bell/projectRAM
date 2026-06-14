@@ -9,7 +9,7 @@
     width: 30%;
 }
 
-.info{
+.info {
     text-align: center;
     margin: 30px;
 }
@@ -21,7 +21,7 @@
 }
 
 .personCard {
-    /* display: flex; */
+    display: "flex";
     flex-direction: column;
     border: 1px solid teal;
     padding: 10px;
@@ -74,6 +74,21 @@
     display: block;
 }
 
+.buttonPage {
+    padding: 7px 12px;
+    margin: 10px;
+    background-color: rgba(0, 128, 128, 0.3);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.buttonPage:disabled {
+    background-color:lightgray;
+    color: black;
+    cursor: auto;
+}
+
 @media (max-width: 768px) {
     .inputSearch {
         width: 50%;
@@ -81,5 +96,10 @@
 
     .cards {
         grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .buttonPage {   
+        padding: 5px 10px;     
+        margin: 5px;        
     }
 }
