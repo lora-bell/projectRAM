@@ -3,5 +3,8 @@ import react from "@vitejs/plugin-react-swc";
 
 export default defineConfig({
     base: '/projectRAM/',
-    plugins: [react()]
+    plugins: [react()],
+    build: {
+        outDir: 'docs',
+    },
 });
