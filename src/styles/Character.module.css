@@ -9,6 +9,12 @@
     width: 30%;
 }
 
+.buttonSearch {
+    /* background: none; */
+    /* border: none; */
+    cursor: pointer;
+}
+
 .info {
     text-align: center;
     margin: 30px;

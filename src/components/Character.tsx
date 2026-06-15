@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { IPerson } from "../interfaces/IPerson"
 import styles from "../styles/Character.module.css";
 import { ImageCard } from "./ImageCard";
+import { Pagination } from "./Pagination";
 
 export const Character = () => {
 
@@ -19,7 +20,7 @@ export const Character = () => {
                 return res.json()
             })
             .then((data) => {
-                setPersons(data)                
+                setPersons(data)
             })
             .catch((e) => setPersons([]))
     }, [])
@@ -63,17 +64,26 @@ export const Character = () => {
         <>
             {persons.length > 0 ?
                 <div className={styles.container}>
-                    <input
-                        type="text"
-                        placeholder="🔍 Поиск по имени..."
-                        className={styles.inputSearch}
-                        value={searchPerson}
-                        onChange={(elem) => {
-                            setSearchPerson(elem.target.value)
-                            setCurrentPage(1)
-                        }}
-                    >
-                    </input>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="🔍 Поиск по имени..."
+                            className={styles.inputSearch}
+                            value={searchPerson}
+                            onChange={(elem) => {
+                                setSearchPerson(elem.target.value)
+                                setCurrentPage(1)
+                            }}
+                        >
+                        </input>
+                        {searchPerson && <button
+                            className={styles.buttonSearch}
+                            onClick={() => {
+                                setSearchPerson("")
+                                setCurrentPage(1)
+                            }}
+                        >X</button>}
+                    </div>
                     <div className={styles.cards}>
                         {persons.map((person) => {
                             const isVisible = indexsCurrentPagePersons.includes(person.index)
@@ -96,18 +106,14 @@ export const Character = () => {
                             )
                         })}
                     </div>
-                    <div>Страницы: {pagination.map(item => {
-                        return <button
-                            key={item}
-                            className={styles.buttonPage}
-                            onClick={() => setCurrentPage(item)}
-                            disabled={item === currentPage ? true : false}
-                            // aria-label={`Страница ${item}`}
-                        >{item}</button>
-                    })}</div>
+                    {pagination.length > 0 && <Pagination
+                        pagination={pagination}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                    />}
                     {filterPerson.length === 0 && <h3 className={styles.info}>Персонажи с таким именем не найдены</h3>}
                 </div>
-                : <h3 className={styles.info}>Персонажи не получены<br />Попробуйте зайти на страницу позже</h3>
+                : <h3 className={styles.info}>Персонажи не получены<br />Необходимо подождать загрузку или<br />попробуйте зайти на страницу позже</h3>
             }
 
         </>
